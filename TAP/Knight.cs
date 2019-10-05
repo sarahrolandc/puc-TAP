@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TAP
 {
-    class Knight
+    public class Knight
     {
         public int score { get; private set; }
         public int effort { get; private set; }
