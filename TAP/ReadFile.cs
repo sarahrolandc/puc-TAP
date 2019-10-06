@@ -30,7 +30,7 @@ namespace TAP
                     s = inputFile.ReadLine();
                     aux = s.Split(' ');
 
-                    Knight knight = new Knight(int.Parse(aux[0]), int.Parse(aux[1]));
+                    Knight knight = new Knight(i, int.Parse(aux[0]), int.Parse(aux[1]));
                     knights.Add(knight);
                 }
 
