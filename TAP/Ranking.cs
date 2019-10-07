@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace TAP
@@ -9,9 +10,9 @@ namespace TAP
         public Knight[] knights { get; set; }
 
         public Ranking(List<Knight> knights, Knight ducan)
-        {            
-            this.knights = knights.Add(ducan);
-            this.knights.ToArray();
+        {
+            knights.Add(ducan);
+            this.knights = knights.ToArray();
         }       
 
         // Pode melhorar!

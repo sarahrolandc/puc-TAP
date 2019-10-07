@@ -84,7 +84,7 @@ namespace TAP
             return effort;
         }
 
-        private void CheckIfItsPossible()
+        private bool CheckIfItsPossible()
         {
             // Inicialmente Ducan está com o máximo de pontos possíveis
             // Retorna false se com o máximo de pontos não é possível chegar entre os lugares desejados
