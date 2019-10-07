@@ -10,16 +10,25 @@ namespace TAP
     {
         private List<Knight> knights;
         private int desiredPlacing;
+        private Knight ducan;
         
         public int DesiredPlacing { get => desiredPlacing; set => desiredPlacing = value; }
         public List<Knight> Knights { get => knights; set => knights = value; }
+        public Knight Ducan { get => ducan; set => ducan = value; }
+        public Ranking Ranking { get; set; }
 
         public Tourney(List<Knight> knights, int desiredPlacing)
         {
             this.knights = knights;
             this.desiredPlacing = desiredPlacing;
+            this.ducan = new Knight(-1, knights.Count, 0);
 
-            this.RefreshRanking();
+            List<Knight> knightsRanking = knights;
+            knightsRanking.Add(ducan);
+            this.Ranking = new Ranking(knightsRanking);
+
+            //ordena os cavaleiros por ordem descrescente de esforço
+            this.knights.Sort();               
         }
 
         public Tourney()
@@ -54,17 +63,46 @@ namespace TAP
         // METODO INTERATIVO
         public int CalculateEffortIterative()
         {
-            return 0;
+            int effort = 0;
+
+            // Percore todos os cavaleiros, que estão ordenados em ordem descresente por esforço
+            // verificando quais lutas Ducan pode perder e continuar entre as posições desejadas
+            foreach(Knight knight in knights)
+            {
+                CheckIfCanLose(knight);
+
+                // Soma os esforços da luta que Ducan ganhou
+                if (knight.win)
+                {
+                    effort += knight.effort;
+                }                
+            }           
+            
+            return effort;
         }
 
-        // Métodos diversos
-        private void RefreshRanking()
+        private void CheckIfCanLose(Knight knight)
         {
-            if (this.knights.Count == 0)
-                return;
+            knight.win = false;
+            knight.score++;
+            ducan.score--;
 
-            this.Knights.Sort((x, y) => -1 * x.score.CompareTo(y.score));
+            // Se a posição do Ducan perdendo a luta for maior que a desejada, 
+            // significa que ele nao pode perder essa luta
+            if (DucanPosition() > this.desiredPlacing)
+            {
+                knight.win = true;
+                knight.score--;
+                ducan.score++;
+            }
         }
+
+        //Implementar
+        private int DucanPosition()
+        {
+            this.Ranking.RefreshRanking();
+            return this.Ranking.DucanPosition();
+        }        
 
         public override string ToString()
         {
