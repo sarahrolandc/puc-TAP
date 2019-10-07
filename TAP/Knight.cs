@@ -9,7 +9,6 @@ namespace TAP
         public int id { get; private set; }
         public int score { get; set; }
         public int effort { get; private set; }
-
         public bool win { get; set; }
 
         public Knight(int id, int score, int effort)

@@ -36,9 +36,25 @@ namespace TAP
         }
 
         // METODO RECURSIVO
-        private int fight(Knight opponent)
+        private int fight(int opponent, int acumulate)
         {
-            return opponent.effort;
+
+            if (opponent <= this.Knights.Count - 1)
+            {
+                CheckIfCanLose(this.Knights[opponent]);
+
+                if (this.Knights[opponent].win)
+                {
+                    acumulate += fight(opponent + 1, this.Knights[opponent].effort);
+                }
+                else
+                {
+                    acumulate += fight(opponent + 1, 0);
+                }
+
+            }
+
+            return acumulate;
         }
 
         public int CalculateEffortRecursive(out TimeSpan time)
@@ -46,11 +62,16 @@ namespace TAP
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            // início método
-            int effort = 0;
-            List<Knight> opponents = new List<Knight>();
+            if (!CheckIfItsPossible())
+            {
+                sw.Stop();
+                time = sw.Elapsed;
 
-            // dando retorno
+                return -1;
+            }
+
+            // início método
+            int effort = fight(0, 0);
 
             sw.Stop();
             time = sw.Elapsed;
@@ -91,6 +112,7 @@ namespace TAP
             if (DucanPosition() > this.desiredPlacing) {
                 return false;
             }
+
             return true;
         }
 
