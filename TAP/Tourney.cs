@@ -21,11 +21,9 @@ namespace TAP
         {
             this.knights = knights;
             this.desiredPlacing = desiredPlacing;
-            this.ducan = new Knight(-1, knights.Count, 0);
-
-            List<Knight> knightsRanking = knights;
-            knightsRanking.Add(ducan);
-            this.Ranking = new Ranking(knightsRanking);
+            // Adiciona Ducan no Ranking, inicialmente considerando que ele ganhou todas as lutas    
+            this.ducan = new Knight(-1, knights.Count, 0);        
+            this.Ranking = new Ranking(knights, this.ducan);            
 
             //ordena os cavaleiros por ordem descrescente de esforço
             this.knights.Sort();               
@@ -63,6 +61,11 @@ namespace TAP
         // METODO INTERATIVO
         public int CalculateEffortIterative()
         {
+            if (!CheckIfItsPossible()) 
+            {
+                return -1;
+            }
+
             int effort = 0;
 
             // Percore todos os cavaleiros, que estão ordenados em ordem descresente por esforço
@@ -81,6 +84,16 @@ namespace TAP
             return effort;
         }
 
+        private void CheckIfItsPossible()
+        {
+            // Inicialmente Ducan está com o máximo de pontos possíveis
+            // Retorna false se com o máximo de pontos não é possível chegar entre os lugares desejados
+            if (DucanPosition() > this.desiredPlacing) {
+                return false;
+            }
+            return true;
+        }
+
         private void CheckIfCanLose(Knight knight)
         {
             knight.win = false;
@@ -97,10 +110,9 @@ namespace TAP
             }
         }
 
-        //Implementar
+        // Retorna em qual posição do Torneio Ducan está
         private int DucanPosition()
         {
-            this.Ranking.RefreshRanking();
             return this.Ranking.DucanPosition();
         }        
 
