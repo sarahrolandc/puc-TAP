@@ -19,11 +19,11 @@ namespace TAP
         public int DucanPosition(Knight ducan, int begin, int end)
         {
             int middle = (begin + end) / 2;
-            if (begin == end)
+            if (begin >= end)
             {
                 if(knights[middle].id == -1)
                 {
-                    return middle;
+                    return middle + 1;
                 }
                 else
                 {
@@ -44,7 +44,7 @@ namespace TAP
             {
                 if(knights[middle].id == -1)
                 {
-                    return middle;
+                    return middle + 1;
                 }
                 else if (!knights[middle].win)
                 {
