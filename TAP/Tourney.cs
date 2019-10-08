@@ -135,7 +135,8 @@ namespace TAP
         // Retorna em qual posição do Torneio Ducan está
         private int DucanPosition()
         {
-            return this.Ranking.DucanPosition();
+            Ranking.RefreshRanking();
+            return this.Ranking.DucanPosition(ducan, 0, Knights.Count - 1);
         }        
 
         public override string ToString()

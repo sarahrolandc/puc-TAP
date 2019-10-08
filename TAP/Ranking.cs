@@ -16,21 +16,50 @@ namespace TAP
         }       
 
         // Pode melhorar!
-        public int DucanPosition()
+        public int DucanPosition(Knight ducan, int begin, int end)
         {
-            this.RefreshRanking();
-
-            for(int i = 0; i < knights.Length; i++)
+            int middle = (begin + end) / 2;
+            if (begin == end)
             {
-                if (knights[i].id == -1)
+                if(knights[middle].id == -1)
                 {
-                    return i + 1;
+                    return middle;
+                }
+                else
+                {
+                    return -1;
                 }
             }
-            return -1;
+            if(knights[middle].score < ducan.score)
+            {
+                //Procura o ducan na esquerda
+                return DucanPosition(ducan, begin, middle - 1);
+            }
+            else if (knights[middle].score > ducan.score)
+            {
+                //procura o ducan na direita
+                return DucanPosition(ducan, middle + 1, end);
+            }
+            else
+            {
+                if(knights[middle].id == -1)
+                {
+                    return middle;
+                }
+                else if (!knights[middle].win)
+                {
+                    //procura o ducan na direita
+                    return DucanPosition(ducan, middle + 1, end);
+                }
+                else
+                {
+                    //procura o ducan na esquerda
+                    return DucanPosition(ducan, begin, middle - 1);
+                }
+            }
         }
 
-        private void RefreshRanking()
+        public void RefreshRanking()
         {
             this.Quicksort(0, knights.Length - 1);
         }
