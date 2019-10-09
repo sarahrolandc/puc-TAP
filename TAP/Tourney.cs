@@ -80,10 +80,16 @@ namespace TAP
         }
 
         // METODO INTERATIVO
-        public int CalculateEffortIterative()
+        public int CalculateEffortIterative(out TimeSpan time)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             if (!CheckIfItsPossible()) 
             {
+                sw.Stop();
+                time = sw.Elapsed;
+
                 return -1;
             }
 
@@ -100,8 +106,11 @@ namespace TAP
                 {
                     effort += knight.effort;
                 }                
-            }           
-            
+            }
+
+            sw.Stop();
+            time = sw.Elapsed;
+
             return effort;
         }
 
